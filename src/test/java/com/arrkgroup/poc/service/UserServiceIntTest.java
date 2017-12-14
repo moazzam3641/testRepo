@@ -23,7 +23,6 @@ import java.util.List;
 
 import static org.assertj.core.api.Assertions.*;
 
-import.java.util.date;
 /**
  * Test class for the UserResource REST controller.
  *
