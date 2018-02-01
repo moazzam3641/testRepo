@@ -7,7 +7,7 @@
     "KeyName": {
       "Description" : "Name of an existing EC2 KeyPair to enable SSH access to the instance",
       "Type": "AWS::EC2::KeyPair::KeyName",
-      "Default" : "jenkintomcat",  
+      "Default" : "jenkintomcat",
       "ConstraintDescription" : "must be the name of an existing EC2 KeyPair."
     },
 
@@ -166,7 +166,34 @@
 
   },
 
-  "Resources" : {    
+  "Resources" : {
+    "CFNInitUser": {
+      "Type": "AWS::IAM::User",
+      "Properties": {
+        "Policies": [
+          {
+            "PolicyName": "AccessForCFNInit",
+            "PolicyDocument": {
+              "Statement": [
+                {
+                  "Effect": "Allow",
+                  "Action": ["cloudformation:DescribeStackResource","cloudformation:DescribeKeyPairs"],
+                  "Resource": "*"
+                }
+              ]
+            }
+          }
+        ]
+      }
+    },
+    "CFNKeys": {
+      "Type": "AWS::IAM::AccessKey",
+      "Properties": {
+        "UserName": {
+          "Ref": "CFNInitUser"
+        }
+      }
+    },
     "EC2Instance" : {
       "Type" : "AWS::EC2::Instance",
       "Metadata": {
@@ -250,6 +277,18 @@
                   "Ref": "AWS::StackName"
                 },
                 " -r EC2Instance ",
+                "    --access-key ",
+                {
+                  "Ref": "CFNKeys"
+                },
+                "    --secret-key ",
+                {
+                  "Fn::GetAtt": [
+                    "CFNKeys",
+                    "SecretAccessKey"
+                  ]
+                },
+                "\n",
                 "/opt/aws/bin/cfn-hup\n",
                 "/opt/aws/bin/cfn-signal -e $? '",
                 {
