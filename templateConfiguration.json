@@ -1,5 +1,7 @@
 {
   "Parameters" : {
-    "BuildSource" : "/target/blog-0.0.1-SNAPSHOT.war"
+    "BucketName" : "",
+    "ObjectKey" : "",
+    "URL" : ""  
   }
 }
