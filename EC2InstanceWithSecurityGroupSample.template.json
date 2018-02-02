@@ -10,7 +10,10 @@
       "Default" : "jenkintomcat",
       "ConstraintDescription" : "must be the name of an existing EC2 KeyPair."
     },
-
+    "BuildSource": {
+      "Description" : "Source of build code",
+      "Type": "String"
+    },
     "InstanceType" : {
       "Description" : "WebServer EC2 instance type",
       "Type" : "String",
@@ -199,7 +202,7 @@
       "Metadata": {
         "AWS::CloudFormation::Init": {
           "configSets" : {
-            "full_install" : [ "install_cfn", "install_package" ]
+            "full_install" : [ "install_cfn", "install_package", "delete_stack" ]
           },
           "install_cfn" : {
             "files" : {
@@ -239,19 +242,26 @@
             "packages": {
               "yum": {
                 "java-1.8.0-openjdk" : [],
+                "java-1.8.0-openjdk-devel" : [],
                 "tomcat8" : [],
                 "httpd" : []
               }
             },
             "files" : {
-              "/usr/share/tomcat8/webapps/blog-0.0.1-SNAPSHOT.war" : {
-                "source" : "http://S3_LOCATION/blog-0.0.1-SNAPSHOT.war",
+              "/usr/share/tomcat8/webapps/" : {
+                "source" : { "Ref" : "BuildSource" },
                 "mode"   : "000500",
                 "owner"  : "tomcat",
                 "group"  : "tomcat"
               }
+            },
+            "services": {
+              "sysvinit": {
+                "httpd"    : { "enabled" : "true", "ensureRunning" : "true" }
+              }
             }
-          }
+          },
+          "delete_stack" : {}
         }
       },
       "Properties" : {
@@ -320,16 +330,29 @@
       "Type" : "AWS::EC2::SecurityGroup",
       "Properties" : {
         "GroupDescription" : "Enable SSH access via port 22",
-        "SecurityGroupIngress" : [ {
-          "IpProtocol" : "tcp",
-          "FromPort" : "22",
-          "ToPort" : "22",
-          "CidrIp" : { "Ref" : "SSHLocation"}
-        } ]
+        "SecurityGroupIngress" : [
+          {
+            "IpProtocol" : "tcp",
+            "FromPort" : "22",
+            "ToPort" : "22",
+            "CidrIp" : { "Ref" : "SSHLocation"}
+          },
+          {
+            "IpProtocol": "tcp",
+            "FromPort": "8080",
+            "ToPort": "8080",
+            "CidrIp": "0.0.0.0/0"
+          },
+          {
+            "IpProtocol": "tcp",
+            "FromPort": "80",
+            "ToPort": "80",
+            "CidrIp": "0.0.0.0/0"
+          }
+        ]
       }
     }
   },
-
   "Outputs" : {
     "InstanceId" : {
       "Description" : "InstanceId of the newly created EC2 instance",
