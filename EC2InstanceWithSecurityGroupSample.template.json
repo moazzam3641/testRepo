@@ -12,7 +12,8 @@
     },
     "BuildSource": {
       "Description" : "Source of build code",
-      "Type": "String"
+      "Type": "String",
+      "Default" : "buildfiles"  
     },
     "InstanceType" : {
       "Description" : "WebServer EC2 instance type",
