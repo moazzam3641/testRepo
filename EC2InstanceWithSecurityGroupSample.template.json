@@ -248,11 +248,12 @@
           },
           "install_package" : {
             "packages": {
-              "yum": {
-                "java-1.8.0-openjdk" : [],
-                "java-1.8.0-openjdk-devel" : [],
-                "tomcat8" : [],
+              "yum": {                
+                "ruby": [],
+                "wget": [],
                 "httpd" : []
+                "tomcat7" : [],
+                
               }
             },
             "files" : {
@@ -264,11 +265,18 @@
                 "mode"   : "000500",
                 "owner"  : "tomcat",
                 "group"  : "tomcat"
-              }
+              },
+             "/etc/httpd/conf.d/tomcatvh.conf": {
+                    "content": "<VirtualHost *:80>\n  ProxyPass / http://localhost:8080/\n  ProxyPassReverse / http://localhost:8080/\n</VirtualHost>\n",
+                    "mode": 420,
+                    "owner": "root",
+                    "group": "root"
+                }    
             },
             "services": {
               "sysvinit": {
-                "httpd"    : { "enabled" : "true", "ensureRunning" : "true" }
+                "httpd"    : { "enabled" : "true", "ensureRunning" : "true" },
+                "tomcat7"    : { "enabled" : "true", "ensureRunning" : "true" }  
               }
             }
           },
