@@ -248,7 +248,7 @@
               }
             },
             "files" : {
-              "/usr/share/tomcat8/webapps/" : {
+              "/usr/share/tomcat8/webapps/blog-0.0.1-SNAPSHOT.war" : {
                 "source" : { "Ref" : "BuildSource" },
                 "mode"   : "000500",
                 "owner"  : "tomcat",
