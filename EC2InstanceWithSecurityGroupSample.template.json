@@ -10,11 +10,18 @@
       "Default" : "jenkintomcat",
       "ConstraintDescription" : "must be the name of an existing EC2 KeyPair."
     },
-    "BuildSource": {
-      "Description" : "Source of build code",
-      "Type": "String",
-      "Default" : "buildfiles"  
+    "BucketName" : {
+        "Type": "String",
+        "Default" : "buildfiles"
     },
+    "ObjectKey" : {
+        "Type": "String",
+        "Default" : "buildfiles"
+    },
+    "URL" : {
+        "Type": "String",
+        "Default" : "buildfiles"
+    },    
     "InstanceType" : {
       "Description" : "WebServer EC2 instance type",
       "Type" : "String",
@@ -250,7 +257,17 @@
             },
             "files" : {
               "/usr/share/tomcat8/webapps/blog-0.0.1-SNAPSHOT.war" : {
-                "source" : { "Ref" : "BuildSource" },
+                "source" : "Value": {
+                    "Fn::Join": [
+                        "",
+                        [
+                            "https://",
+                            {
+                                "Ref" : "URL","Ref" : "BucketName","Ref" : "ObjectKey","blog-0.0.1-SNAPSHOT.war"
+                            }
+                        ]
+                    ]
+                },
                 "mode"   : "000500",
                 "owner"  : "tomcat",
                 "group"  : "tomcat"
