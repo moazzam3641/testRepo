@@ -259,7 +259,7 @@
             "files" : {
               "/usr/share/tomcat8/webapps/blog-0.0.1-SNAPSHOT.zip" : {
                 "source" : { "Fn::Join": [ "", [ 
-                    {"Ref" : "URL"},".zip" 
+                    {"Ref" : "URL"},".zip"
                          
                 ] ]  },
                 "mode"   : "000500",
@@ -276,7 +276,7 @@
             "services": {
               "sysvinit": {
                 "httpd"    : { "enabled" : "true", "ensureRunning" : "true" },
-                "tomcat7"    : { "enabled" : "true", "ensureRunning" : "true" }  
+                "tomcat8"    : { "enabled" : "true", "ensureRunning" : "true" }  
               }
             }
           },
