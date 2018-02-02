@@ -251,8 +251,8 @@
               "yum": {                
                 "ruby": [],
                 "wget": [],
-                "httpd" : []
-                "tomcat7" : [],
+                "httpd" : [],
+                "tomcat7" : []
                 
               }
             },
