@@ -252,14 +252,14 @@
                 "ruby": [],
                 "wget": [],
                 "httpd" : [],
-                "tomcat7" : []
+                "tomcat8" : []
                 
               }
             },
             "files" : {
-              "/usr/share/tomcat8/webapps/blog-0.0.1-SNAPSHOT.war" : {
+              "/usr/share/tomcat8/webapps/blog-0.0.1-SNAPSHOT.zip" : {
                 "source" : { "Fn::Join": [ "", [ 
-                    {"Ref" : "URL"},"/blog-0.0.1-SNAPSHOT.war" 
+                    {"Ref" : "URL"},".zip" 
                          
                 ] ]  },
                 "mode"   : "000500",
@@ -268,7 +268,7 @@
               },
              "/etc/httpd/conf.d/tomcatvh.conf": {
                     "content": "<VirtualHost *:80>\n  ProxyPass / http://localhost:8080/\n  ProxyPassReverse / http://localhost:8080/\n</VirtualHost>\n",
-                    "mode": 420,
+                    "mode": 000644,
                     "owner": "root",
                     "group": "root"
                 }    
@@ -318,7 +318,7 @@
                   ]
                 },
                 "\n",
-                "/opt/aws/bin/cfn-hup\n",
+                "/opt/aws/bin/cfn-hup\n",                
                 "/opt/aws/bin/cfn-signal -e $? '",
                 {
                   "Ref": "ApplicationWaitHandle"
@@ -355,12 +355,6 @@
             "FromPort" : "22",
             "ToPort" : "22",
             "CidrIp" : { "Ref" : "SSHLocation"}
-          },
-          {
-            "IpProtocol": "tcp",
-            "FromPort": "8080",
-            "ToPort": "8080",
-            "CidrIp": "0.0.0.0/0"
           },
           {
             "IpProtocol": "tcp",
