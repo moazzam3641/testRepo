@@ -258,18 +258,8 @@
             "files" : {
               "/usr/share/tomcat8/webapps/blog-0.0.1-SNAPSHOT.war" : {
                 "source" : { "Fn::Join": [ "", [ 
-                    "http://", {
-                        "Fn::Join": [ "", [
-                        {"Ref" : "URL"},{
-                            "Fn::Join": [ "", [    
-                            {"Ref" : "BucketName"},{
-                            "Fn::Join": [ "", [
-                                {"Ref" : "ObjectKey"},"blog-0.0.1-SNAPSHOT.war"]]
-                            } ]]
-                            
-                        } 
-                        ] ]        
-                    } 
+                    {"Ref" : "URL"},"/blog-0.0.1-SNAPSHOT.war" 
+                         
                 ] ]  },
                 "mode"   : "000500",
                 "owner"  : "tomcat",
