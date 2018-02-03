@@ -258,10 +258,7 @@
             },
             "files" : {
               "/usr/share/tomcat8/webapps/" : {
-                "source" : { "Fn::Join": [ "", [ 
-                    {"Ref" : "URL"},".zip"
-                         
-                ] ]  },
+                "source" : {"Ref" : "URL"},
                "authentication" : "S3AccessCreds",   
                 "mode"   : "000500",
                 "owner"  : "tomcat",
@@ -269,7 +266,7 @@
               },
              "/etc/httpd/conf.d/tomcatvh.conf": {
                     "content": "<VirtualHost *:80>\n  ProxyPass / http://localhost:8080/\n  ProxyPassReverse / http://localhost:8080/\n</VirtualHost>\n",
-                    "mode": 000644,
+                    "mode": "000644",
                     "owner": "root",
                     "group": "root"
                 }    
