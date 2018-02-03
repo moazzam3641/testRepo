@@ -257,11 +257,12 @@
               }
             },
             "files" : {
-              "/usr/share/tomcat8/webapps/blog-0.0.1-SNAPSHOT.zip" : {
+              "/usr/share/tomcat8/webapps/" : {
                 "source" : { "Fn::Join": [ "", [ 
                     {"Ref" : "URL"},".zip"
                          
                 ] ]  },
+               "authentication" : "S3AccessCreds",   
                 "mode"   : "000500",
                 "owner"  : "tomcat",
                 "group"  : "tomcat"
@@ -281,7 +282,14 @@
             }
           },
           "delete_stack" : {}
-        }
+        },
+          "AWS::CloudFormation::Authentication" : {
+             "S3AccessCreds" : {
+                "type" : "S3",
+                "accessKeyId" : { "Ref" : "CfnKeys" },
+                "secretKey" : { "Fn::GetAtt": [ "CfnKeys", "SecretAccessKey" ] }
+             }
+          }
       },
       "Properties" : {
         "InstanceType" : { "Ref" : "InstanceType" },
