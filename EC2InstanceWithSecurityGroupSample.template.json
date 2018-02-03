@@ -286,8 +286,8 @@
           "AWS::CloudFormation::Authentication" : {
              "S3AccessCreds" : {
                 "type" : "S3",
-                "accessKeyId" : { "Ref" : "CfnKeys" },
-                "secretKey" : { "Fn::GetAtt": [ "CfnKeys", "SecretAccessKey" ] }
+                "accessKeyId" : { "Ref" : "CFNKeys" },
+                "secretKey" : { "Fn::GetAtt": [ "CFNKeys", "SecretAccessKey" ] }
              }
           }
       },
