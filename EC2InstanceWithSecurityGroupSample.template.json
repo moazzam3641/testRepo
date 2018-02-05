@@ -450,7 +450,7 @@
             "files" : {
               "/var/lib/tomcat8/webapps/newversion/appspec.yml": {
                   "content": {
-                      "Fn::Sub": "version: 0.0\nos: linux\nfiles:\n  - source: target/blog-0.0.1-SNAPSHOT.war\n    destination: /tmp/codedeploy-deployment-staging-area/permissions:\n  - object: /var/www/html/index.php\n    owner: root\n    group: root\n    mode: 644\n"
+                      "Fn::Sub": "version: 0.0\nos: linux\nfiles:\n  - source: target/blog-0.0.1-SNAPSHOT.war\n    destination: /tmp/codedeploy-deployment-staging-area/permissions:\n  - object: /tmp/codedeploy-deployment-staging-area\n    owner: root\n    group: root\n    mode: 644\n"
                   },
                   "mode"   : "000644",
                   "owner"  : "tomcat",
@@ -458,7 +458,7 @@
               },
               "/var/lib/tomcat8/webapps/pushnewversion.sh" : {
                 "content": {
-                    "Fn::Sub": "#!/bin/bash\naws deploy push \\\n  --application-name ${CodeDeployApplication} \\\n  --description \"new version\" \\\n  --ignore-hidden-files \\\n  --s3-location s3://${BucketName}/${ObjectKey}.zip \\\n  --source /var/lib/tomcat8/webapps/newversion\n"
+                    "Fn::Sub": "#!/bin/bash\naws deploy push \\\n  --application-name ${CodeDeployApplication} \\\n  --description \"new version\" \\\n  --ignore-hidden-files \\\n  --s3-location s3://${BucketName}/${ObjectKey} \\\n  --source /var/lib/tomcat8/webapps/newversion\n"
                 },
                 "authentication" : "S3AccessCreds",   
                 "mode"   : "000755",
