@@ -2,4 +2,4 @@ version: 0.0
 os: linux
 files:
   - source: /target/blog-0.0.1-SNAPSHOT.war
-    destination: /tmp/codedeploy-deployment-staging-area/
+    destination: /usr/share/tomcat8/webapps/codedeploy-deployment-staging-area/
