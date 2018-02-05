@@ -374,23 +374,17 @@
 	  "Type" : "AWS::CodeDeploy::DeploymentGroup",
 	  "Properties" : {
 	    "ApplicationName" : {"Ref" : "CodeDeployApplication"},
-	    "Deployment" : {
-	      "Description" : "First time",
-	      "IgnoreApplicationStopFailures" : "true",
-	      "Revision" : {
-	        "RevisionType" : "S3",
-	        "S3Location" : {
-	          "Bucket" : {"Ref" : "BucketName"},
-	          "Key" : {"Ref" : "ObjectKey"},
-	          "BundleType" : "Zip"
-	        }
-	      }
-	    },
-	    "Ec2TagFilters" : [{
-	      "Key" : {"Ref" : "EC2TagKey0"},
-	      "Value" : {"Ref" : "EC2TagValue0"},
-	      "Type" : "KEY_AND_VALUE"
-	    }],
+	    "DeploymentGroupName": {
+            "Fn::Join": [
+                "",
+                [
+                    {
+                        "Ref" : "CodeDeployApplication"
+                    },
+                    "-dg"
+                ]
+            ]
+        },
 	    "ServiceRoleArn" : {"Fn::GetAtt": [
                         "RoleArn",
                         "Arn"
