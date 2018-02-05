@@ -283,7 +283,8 @@
               "Effect": "Allow",
               "Principal": {
                 "Service": [
-                  "ec2.amazonaws.com"
+                  "ec2.amazonaws.com",
+                  "codedeploy.amazonaws.com"  
                 ]
               },
               "Action": [
@@ -346,31 +347,7 @@
 	      "Value" : "75"
 	    }
 	  }
-	},
-    "RoleArn": {
-        "Type": "AWS::IAM::Role",
-        "Properties": {
-            "AssumeRolePolicyDocument": {
-                "Statement": [
-                    {
-                        "Action": [
-                            "sts:AssumeRole"
-                        ],
-                        "Effect": "Allow",
-                        "Principal": {
-                            "Service": [
-                                "codedeploy.amazonaws.com"
-                            ]
-                        }
-                    }
-                ],
-                "Version": "2012-10-17"
-            },
-            "ManagedPolicyArns": [
-                "arn:aws:iam::aws:policy/service-role/AWSCodeDeployRole"
-            ]
-        }
-    },  
+	},  
 	"DeploymentGroup" : {
 	  "Type" : "AWS::CodeDeploy::DeploymentGroup",
 	  "Properties" : {
@@ -392,7 +369,7 @@
 	      "Value" : {"Ref" : "EC2TagValue0"},
 	      "Type" : "KEY_AND_VALUE"
 	    }],
-	    "ServiceRoleArn" : {"Ref" : "RoleArn"}
+	    "ServiceRoleArn" : {"Ref" : "InstanceRole"}
 	  }
 	},  
     "EC2Instance" : {
