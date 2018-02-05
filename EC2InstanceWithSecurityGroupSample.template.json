@@ -10,6 +10,14 @@
       "Default" : "jenkintomcat",
       "ConstraintDescription" : "must be the name of an existing EC2 KeyPair."
     },
+    "EC2TagKey0": {
+      "Type": "String",
+      "Default": "ec2TagKey0"
+    },
+    "EC2TagValue0": {
+      "Type": "String",
+      "Default": "ec2TagValue0"
+    },  
     "BucketName" : {
         "Type": "String",
         "Default" : "buildfiles"
@@ -322,7 +330,71 @@
           }
         ]
       }
+    },    
+    "CodeDeployApplication": {
+	  "Type": "AWS::CodeDeploy::Application",
+	  "Properties": {
+	  	"ApplicationName" : "CFNCodeDeploy",
+	    "ComputePlatform": "Lambda"
+	  }
+	},    
+	"TwentyFivePercentAtATime" : {
+	  "Type" : "AWS::CodeDeploy::DeploymentConfig",
+	  "Properties" : {
+	    "MinimumHealthyHosts" : {
+	      "Type" : "FLEET_PERCENT",
+	      "Value" : "75"
+	    }
+	  }
+	},
+    "RoleArn": {
+        "Type": "AWS::IAM::Role",
+        "Properties": {
+            "AssumeRolePolicyDocument": {
+                "Statement": [
+                    {
+                        "Action": [
+                            "sts:AssumeRole"
+                        ],
+                        "Effect": "Allow",
+                        "Principal": {
+                            "Service": [
+                                "codedeploy.amazonaws.com"
+                            ]
+                        }
+                    }
+                ],
+                "Version": "2012-10-17"
+            },
+            "ManagedPolicyArns": [
+                "arn:aws:iam::aws:policy/service-role/AWSCodeDeployRole"
+            ]
+        }
     },  
+	"DeploymentGroup" : {
+	  "Type" : "AWS::CodeDeploy::DeploymentGroup",
+	  "Properties" : {
+	    "ApplicationName" : {"Ref" : "CodeDeployApplication"},
+	    "Deployment" : {
+	      "Description" : "First time",
+	      "IgnoreApplicationStopFailures" : "true",
+	      "Revision" : {
+	        "RevisionType" : "S3",
+	        "S3Location" : {
+	          "Bucket" : {"Ref" : "Bucket"},
+	          "Key" : {"Ref" : "ObjectKey"},
+	          "BundleType" : "Zip"
+	        }
+	      }
+	    },
+	    "Ec2TagFilters" : [{
+	      "Key" : {"Ref" : "EC2TagKey0"},
+	      "Value" : {"Ref" : "EC2TagValue0"},
+	      "Type" : "KEY_AND_VALUE"
+	    }],
+	    "ServiceRoleArn" : {"Ref" : "RoleArn"}
+	  }
+	},  
     "EC2Instance" : {
       "Type" : "AWS::EC2::Instance",
       "Metadata": {
@@ -411,6 +483,7 @@
         "InstanceType" : { "Ref" : "InstanceType" },
         "SecurityGroups" : [ { "Ref" : "InstanceSecurityGroup" } ],
         "KeyName" : { "Ref" : "KeyName" },
+        "Tags" : [{ "Key" : { "Ref" : "EC2TagKey0" }, "Value" : { "Ref" : "EC2TagValue0" } }],  
         "ImageId" : { "Fn::FindInMap" : [ "AWSRegionArch2AMI", { "Ref" : "AWS::Region" },
                           { "Fn::FindInMap" : [ "AWSInstanceType2Arch", { "Ref" : "InstanceType" }, "Arch" ] } ] },
         "IamInstanceProfile": {
