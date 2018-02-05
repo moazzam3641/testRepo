@@ -385,6 +385,11 @@
                 ]
             ]
         },
+      "Ec2TagFilters" : [{
+        "Key" : {"Ref" : "EC2TagKey0"},
+        "Value" : {"Ref" : "EC2TagValue0"},
+        "Type" : "KEY_AND_VALUE"
+      }],
       "ServiceRoleArn" : {"Fn::GetAtt": [
                         "RoleArn",
                         "Arn"
@@ -445,11 +450,11 @@
             "files" : {
               "/var/lib/tomcat/webapps/newversion/appspec.yml": {
                   "content": {
-                      "Fn::Sub": "version: 0.0\nos: linux\nfiles:\n  - source: target/blog-0.0.1-SNAPSHOT.war\n    destination: /tmp/codedeploy-deployment-staging-area/"
+                      "Fn::Sub": "version: 0.0\nos: linux\nfiles:\n  - source: target/blog-0.0.1-SNAPSHOT.war\n    destination: /tmp/codedeploy-deployment-staging-area/permissions:\n  - object: /var/www/html/index.php\n    owner: root\n    group: root\n    mode: 644\n"
                   },
                   "mode"   : "000644",
-                  "owner"  : "root",
-                  "group"  : "root"
+                  "owner"  : "tomcat",
+                  "group"  : "tomcat"
               },
               "/var/lib/tomcat/webapps/pushnewversion.sh" : {
                 "content": {
@@ -457,8 +462,8 @@
                 },
                 "authentication" : "S3AccessCreds",   
                 "mode"   : "000755",
-                "owner"  : "root",
-                "group"  : "root"
+                "owner"  : "tomcat",
+                "group"  : "tomcat"
               },
              "/etc/httpd/conf.d/tomcatvh.conf": {
                     "content": "<VirtualHost *:80>\n  ProxyPass / http://localhost:8080/\n  ProxyPassReverse / http://localhost:8080/\n</VirtualHost>\n",
