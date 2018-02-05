@@ -334,8 +334,7 @@
     "CodeDeployApplication": {
 	  "Type": "AWS::CodeDeploy::Application",
 	  "Properties": {
-	  	"ApplicationName" : "CFNCodeDeploy",
-	    "ComputePlatform": "Lambda"
+	  	"ApplicationName" : "CFNCodeDeploy"
 	  }
 	},    
 	"TwentyFivePercentAtATime" : {
@@ -452,7 +451,7 @@
             "files" : {
               "/var/lib/tomcat/webapps/" : {
                 "source" : {"Ref" : "URL"},
-               "authentication" : "S3AccessCreds",   
+                "authentication" : "S3AccessCreds",   
                 "mode"   : "000500",
                 "owner"  : "tomcat",
                 "group"  : "tomcat"
