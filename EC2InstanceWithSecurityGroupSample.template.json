@@ -443,22 +443,22 @@
               }
             },
             "files" : {
-              "/var/lib/tomcat/webapps/appspec.yml": {
+              "/var/lib/tomcat/webapps/newversion/appspec.yml": {
                   "content": {
-                      "Fn::Sub": "version: 0.0\nos: linux\nfiles:\n  - source: target/blog-0.0.1-SNAPSHOT.war\n    destination: /tmp/codedeploy-deployment-staging-area/\npermissions:\n"
+                      "Fn::Sub": "version: 0.0\nos: linux\nfiles:\n  - source: target/blog-0.0.1-SNAPSHOT.war\n    destination: /tmp/codedeploy-deployment-staging-area/"
                   },
                   "mode"   : "000644",
-                  "owner"  : "tomcat",
-                  "group"  : "tomcat"
+                  "owner"  : "root",
+                  "group"  : "root"
               },
               "/var/lib/tomcat/webapps/pushnewversion.sh" : {
                 "content": {
-                    "Fn::Sub": "#!/bin/bash\naws deploy push \\\n  --application-name ${CodeDeployApplication} \\\n  --description \"new version\" \\\n  --ignore-hidden-files \\\n  --s3-location s3://${BucketName}/${ObjectKey}.zip \\\n  --source /var/lib/tomcat/webapps\n"
+                    "Fn::Sub": "#!/bin/bash\naws deploy push \\\n  --application-name ${CodeDeployApplication} \\\n  --description \"new version\" \\\n  --ignore-hidden-files \\\n  --s3-location s3://${BucketName}/${ObjectKey}.zip \\\n  --source /var/lib/tomcat/webapps/newversion\n"
                 },
                 "authentication" : "S3AccessCreds",   
-                "mode"   : "000500",
-                "owner"  : "tomcat",
-                "group"  : "tomcat"
+                "mode"   : "000755",
+                "owner"  : "root",
+                "group"  : "root"
               },
              "/etc/httpd/conf.d/tomcatvh.conf": {
                     "content": "<VirtualHost *:80>\n  ProxyPass / http://localhost:8080/\n  ProxyPassReverse / http://localhost:8080/\n</VirtualHost>\n",
