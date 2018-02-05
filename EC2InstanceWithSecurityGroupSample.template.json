@@ -381,7 +381,7 @@
 	      "Revision" : {
 	        "RevisionType" : "S3",
 	        "S3Location" : {
-	          "Bucket" : {"Ref" : "Bucket"},
+	          "Bucket" : {"Ref" : "BucketName"},
 	          "Key" : {"Ref" : "ObjectKey"},
 	          "BundleType" : "Zip"
 	        }
