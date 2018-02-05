@@ -412,8 +412,8 @@
                   "region=", { "Ref" : "AWS::Region" }, "\n"
                 ]]},
                 "mode"    : "000400",
-                "owner"   : "root",
-                "group"   : "root"
+                "owner"   : "ec2-user",
+                "group"   : "ec2-user"
               },
 
               "/etc/cfn/hooks.d/cfn-auto-reloader.conf" : {
@@ -428,8 +428,38 @@
                   "         --region ", { "Ref" : "AWS::Region" }, "\n",
                   "runas=root\n"
                 ]]}
-              }
+              },              
+                "/home/ec2-user/codedeployinstall": {
+                    "group": "ec2-user",
+                    "mode": "000755",
+                    "owner": "ec2-user",
+                    "source": {
+                        "Fn::Join": [
+                            "",
+                            [
+                                "http://aws-codedeploy-",
+                                {
+                                    "Ref": "AWS::Region"
+                                },
+                                ".s3.amazonaws.com/latest/install"
+                            ]
+                        ]
+                    }
+                },
+                "/home/ec2-user/codedeployinstallpt2": {
+                    "content": {
+                        "Fn::Sub": "#!/bin/bash\nyes|/home/ec2-user/codedeployinstall auto\n"
+                    },
+                    "group": "ec2-user",
+                    "mode": "000755",
+                    "owner": "ec2-user"
+                }  
             },
+            "commands": {
+                "ubuntu1cmd1": {
+                    "command": "/home/ec2-user/codedeployinstallpt2"
+                }
+            },  
             "services" : {
               "sysvinit" : {
                 "cfn-hup" : { "enabled" : "true", "ensureRunning" : "true",
@@ -453,8 +483,8 @@
                       "Fn::Sub": "version: 0.0\nos: linux\nfiles:\n  - source: target/blog-0.0.1-SNAPSHOT.war\n    destination: /tmp/codedeploy-deployment-staging-area/"
                   },
                   "mode"   : "000644",
-                  "owner"  : "root",
-                  "group"  : "root"
+                  "owner"  : "ec2-user",
+                  "group"  : "ec2-user"
               },
               "/var/lib/tomcat8/webapps/pushnewversion.sh" : {
                 "content": {
@@ -462,14 +492,14 @@
                 },
                 "authentication" : "S3AccessCreds",   
                 "mode"   : "000755",
-                "owner"  : "root",
-                "group"  : "root"
+                "owner"  : "ec2-user",
+                "group"  : "ec2-user"
               },
              "/etc/httpd/conf.d/tomcatvh.conf": {
                     "content": "<VirtualHost *:80>\n  ProxyPass / http://localhost:8080/\n  ProxyPassReverse / http://localhost:8080/\n</VirtualHost>\n",
                     "mode": "000644",
-                    "owner": "root",
-                    "group": "root"
+                    "owner": "ec2-user",
+                    "group": "ec2-user"
                 }    
             },
             "services": {
@@ -511,8 +541,8 @@
                 "yum install -y aws-cli\n",  
                 "# Install the AWS CodeDeploy Agent.\n",
                 "cd /home/ec2-user/\n",
-                "aws s3 cp 's3://aws-codedeploy-eu-west-1/latest/codedeploy-agent.noarch.rpm' . || error_exit 'Failed to download AWS CodeDeploy Agent.'\n",
-                "yum -y install codedeploy-agent.noarch.rpm || error_exit 'Failed to install AWS CodeDeploy Agent.' \n",  
+                "aws s3 cp 's3://aws-codedeploy-eu-west-1/latest/codedeploy-agent.noarch.rpm'\n",
+                "yum -y install codedeploy-agent.noarch.rpm \n",  
                 "/opt/aws/bin/cfn-init -c full_install -v --region ",
                 {
                   "Ref": "AWS::Region"
