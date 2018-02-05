@@ -450,11 +450,11 @@
             "files" : {
               "/var/lib/tomcat8/webapps/newversion/appspec.yml": {
                   "content": {
-                      "Fn::Sub": "version: 0.0\nos: linux\nfiles:\n  - source: target/blog-0.0.1-SNAPSHOT.war\n    destination: /tmp/codedeploy-deployment-staging-area/permissions:\n  - object: /tmp/codedeploy-deployment-staging-area\n    owner: tomcat\n    group: tomcat\n    mode: 644\n"
+                      "Fn::Sub": "version: 0.0\nos: linux\nfiles:\n  - source: target/blog-0.0.1-SNAPSHOT.war\n    destination: /tmp/codedeploy-deployment-staging-area/"
                   },
                   "mode"   : "000644",
-                  "owner"  : "tomcat",
-                  "group"  : "tomcat"
+                  "owner"  : "root",
+                  "group"  : "root"
               },
               "/var/lib/tomcat8/webapps/pushnewversion.sh" : {
                 "content": {
@@ -462,8 +462,8 @@
                 },
                 "authentication" : "S3AccessCreds",   
                 "mode"   : "000755",
-                "owner"  : "tomcat",
-                "group"  : "tomcat"
+                "owner"  : "root",
+                "group"  : "root"
               },
              "/etc/httpd/conf.d/tomcatvh.conf": {
                     "content": "<VirtualHost *:80>\n  ProxyPass / http://localhost:8080/\n  ProxyPassReverse / http://localhost:8080/\n</VirtualHost>\n",
