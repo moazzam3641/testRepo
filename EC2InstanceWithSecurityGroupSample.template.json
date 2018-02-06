@@ -478,17 +478,17 @@
               }
             },
             "files" : {
-              "/var/lib/tomcat8/webapps/newversion/appspec.yml": {
+              "/var/lib/tomcat8/webapps/appspec.yml": {
                   "content": {
                       "Fn::Sub": "version: 0.0\nos: linux\nfiles:\n  - source: target/blog-0.0.1-SNAPSHOT.war\n    destination: /tmp/codedeploy-deployment-staging-area/"
                   },
-                  "mode"   : "000644",
+                  "mode"   : "000755",
                   "owner"  : "ec2-user",
                   "group"  : "ec2-user"
               },
               "/var/lib/tomcat8/webapps/pushnewversion.sh" : {
                 "content": {
-                    "Fn::Sub": "#!/bin/bash\naws deploy push \\\n  --application-name ${CodeDeployApplication} \\\n  --description \"new version\" \\\n  --ignore-hidden-files \\\n  --s3-location s3://${BucketName}/${ObjectKey}.zip \\\n  --source /var/lib/tomcat8/webapps/newversion\\\n --region ${AWS::Region}\n"
+                    "Fn::Sub": "#!/bin/bash\naws deploy create-deployment \\\n  --application-name ${CodeDeployApplication} \\\n --deployment-group-name ${CodeDeployApplication}-dg \\\n --deployment-config-name CodeDeployDefault.OneAtATime\\\n --description \"new version\" \\\n  --ignore-hidden-files \\\n  --s3-location bucket= ${BucketName},bundleType=zip,key=${ObjectKey}.zip\n"
                 },
                 "authentication" : "S3AccessCreds",   
                 "mode"   : "000755",
