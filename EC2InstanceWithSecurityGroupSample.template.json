@@ -9,7 +9,7 @@
       "Type": "Number",
       "MinValue": "2",
       "MaxValue": "1440",
-      "Default": "10"
+      "Default": "5"
     },  
     "KeyName": {
       "Description" : "Name of an existing EC2 KeyPair to enable SSH access to the instance",
@@ -317,21 +317,7 @@
                 "ec2:*",
                 "lambda:*",
                 "elasticloadbalancing:*",
-                "iam:AddRoleToInstanceProfile",
-                "iam:CreateInstanceProfile",
-                "iam:CreateRole",
-                "iam:DeleteInstanceProfile",
-                "iam:DeleteRole",
-                "iam:DeleteRolePolicy",
-                "iam:GetInstanceProfile",
-                "iam:GetRole",
-                "iam:GetRolePolicy",
-                "iam:ListInstanceProfilesForRole",
-                "iam:ListRolePolicies",
-                "iam:ListRoles",
-                "iam:PassRole",
-                "iam:PutRolePolicy",
-                "iam:RemoveRoleFromInstanceProfile",
+                "iam:*",
                 "s3:*"  
               ],
               "Resource": "*"
@@ -397,26 +383,13 @@
                     "Statement": [ {
                         "Effect": "Allow",
                         "Action": [
+                            "cloudformation:*",
                             "autoscaling:*",
                             "codedeploy:*",
                             "ec2:*",
                             "lambda:*",
                             "elasticloadbalancing:*",
-                            "iam:AddRoleToInstanceProfile",
-                            "iam:CreateInstanceProfile",
-                            "iam:CreateRole",
-                            "iam:DeleteInstanceProfile",
-                            "iam:DeleteRole",
-                            "iam:DeleteRolePolicy",
-                            "iam:GetInstanceProfile",
-                            "iam:GetRole",
-                            "iam:GetRolePolicy",
-                            "iam:ListInstanceProfilesForRole",
-                            "iam:ListRolePolicies",
-                            "iam:ListRoles",
-                            "iam:PassRole",
-                            "iam:PutRolePolicy",
-                            "iam:RemoveRoleFromInstanceProfile",
+                            "iam:*",
                             "s3:*"
                         ],
                         "Resource": "*"
