@@ -432,8 +432,55 @@
       "Metadata": {
         "AWS::CloudFormation::Init": {
           "configSets" : {
-            "full_install" : [ "install_cfn", "install_package", "delete_stack" ]
+            "full_install" : [ "install_package","install_cfn", "delete_stack" ]
           },
+          "install_package" : {
+            "packages": {
+              "yum": {                
+                "ruby": [],
+                "wget": [],
+                "httpd" : [],
+                "tomcat8" : []
+                
+              }
+            },
+            "files" : {
+              "/var/lib/tomcat8/webapps/appspec.yml": {
+                  "content": {
+                      "Fn::Sub": "version: 0.0\nos: linux\nfiles:\n  - source: target/blog-0.0.1-SNAPSHOT.war\n    destination: /tmp/codedeploy-deployment-staging-area/"
+                  },
+                  "mode"   : "000755",
+                  "owner"  : "ec2-user",
+                  "group"  : "ec2-user"
+              },
+              "/var/lib/tomcat8/webapps/pushnewversion.sh" : {
+                "content": {
+                    "Fn::Sub": "#!/bin/bash\naws deploy create-deployment \\\n  --application-name ${CodeDeployApplication} \\\n --deployment-group-name ${DeploymentGroup} \\\n --deployment-config-name CodeDeployDefault.OneAtATime\\\n --description \"new version\" \\\n  --s3-location bucket=${BucketName},bundleType=zip,key=${ObjectKey} \\\n --region ${AWS::Region}\n"
+                },
+                "authentication" : "S3AccessCreds",   
+                "mode"   : "000755",
+                "owner"  : "ec2-user",
+                "group"  : "ec2-user"
+              },  
+             "/etc/httpd/conf.d/tomcatvh.conf": {
+                    "content": "<VirtualHost *:80>\n  ProxyPass / http://localhost:8080/\n  ProxyPassReverse / http://localhost:8080/\n</VirtualHost>\n",
+                    "mode": "000644",
+                    "owner": "ec2-user",
+                    "group": "ec2-user"
+                }    
+            },
+            "commands": {
+                "deploycode": {
+                    "command": "/var/lib/tomcat8/webapps/pushnewversion.sh"
+                }
+            },  
+            "services": {
+              "sysvinit": {                  
+                "httpd"    : { "enabled" : "true", "ensureRunning" : "true" },
+                "tomcat8"    : { "enabled" : "true", "ensureRunning" : "true" }  
+              }
+            }                
+          },          
           "install_cfn" : {
             "files" : {
               "/etc/cfn/cfn-hup.conf" : {
@@ -498,54 +545,7 @@
                               "files" : ["/etc/cfn/cfn-hup.conf", "/etc/cfn/hooks.d/cfn-auto-reloader.conf"]}
               }
             }
-          },
-          "install_package" : {
-            "packages": {
-              "yum": {                
-                "ruby": [],
-                "wget": [],
-                "httpd" : [],
-                "tomcat8" : []
-                
-              }
-            },
-            "files" : {
-              "/var/lib/tomcat8/webapps/appspec.yml": {
-                  "content": {
-                      "Fn::Sub": "version: 0.0\nos: linux\nfiles:\n  - source: target/blog-0.0.1-SNAPSHOT.war\n    destination: /tmp/codedeploy-deployment-staging-area/"
-                  },
-                  "mode"   : "000755",
-                  "owner"  : "ec2-user",
-                  "group"  : "ec2-user"
-              },
-              "/var/lib/tomcat8/webapps/pushnewversion.sh" : {
-                "content": {
-                    "Fn::Sub": "#!/bin/bash\naws deploy create-deployment \\\n  --application-name ${CodeDeployApplication} \\\n --deployment-group-name ${DeploymentGroup} \\\n --deployment-config-name CodeDeployDefault.OneAtATime\\\n --description \"new version\" \\\n  --s3-location bucket=${BucketName},bundleType=zip,key=${ObjectKey} \\\n --region ${AWS::Region}\n"
-                },
-                "authentication" : "S3AccessCreds",   
-                "mode"   : "000755",
-                "owner"  : "ec2-user",
-                "group"  : "ec2-user"
-              },  
-             "/etc/httpd/conf.d/tomcatvh.conf": {
-                    "content": "<VirtualHost *:80>\n  ProxyPass / http://localhost:8080/\n  ProxyPassReverse / http://localhost:8080/\n</VirtualHost>\n",
-                    "mode": "000644",
-                    "owner": "ec2-user",
-                    "group": "ec2-user"
-                }    
-            },
-            "commands": {
-                "deploycode": {
-                    "command": "/var/lib/tomcat8/webapps/pushnewversion.sh"
-                }
-            },  
-            "services": {
-              "sysvinit": {                  
-                "httpd"    : { "enabled" : "true", "ensureRunning" : "true" },
-                "tomcat8"    : { "enabled" : "true", "ensureRunning" : "true" }  
-              }
-            }                
-          },
+          },  
           "delete_stack" : {
             "files" : {
                  "/var/lib/tomcat8/webapps/deletestack.sh" : {
