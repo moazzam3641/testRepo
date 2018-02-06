@@ -488,7 +488,7 @@
               },
               "/var/lib/tomcat8/webapps/pushnewversion.sh" : {
                 "content": {
-                    "Fn::Sub": "#!/bin/bash\naws deploy create-deployment \\\n  --application-name ${CodeDeployApplication} \\\n --deployment-group-name ${CodeDeployApplication}-dg \\\n --deployment-config-name CodeDeployDefault.OneAtATime\\\n --description \"new version\" \\\n  --ignore-hidden-files \\\n  --s3-location bucket= ${BucketName},bundleType=zip,key=${ObjectKey}.zip\n"
+                    "Fn::Sub": "#!/bin/bash\naws deploy create-deployment \\\n  --application-name ${CodeDeployApplication} \\\n --deployment-group-name ${DeploymentGroup} \\\n --deployment-config-name CodeDeployDefault.OneAtATime\\\n --description \"new version\" \\\n  --s3-location bucket=${BucketName},bundleType=zip,key=${ObjectKey}.zip \\\n --region ${AWS::region}"
                 },
                 "authentication" : "S3AccessCreds",   
                 "mode"   : "000755",
