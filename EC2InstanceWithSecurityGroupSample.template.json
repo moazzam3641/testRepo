@@ -4,6 +4,13 @@
   "Description" : "AWS CloudFormation Sample Template EC2InstanceWithSecurityGroupSample: Create an Amazon EC2 instance running the Amazon Linux AMI. The AMI is chosen based on the region in which the stack is run. This example creates an EC2 security group for the instance to give you SSH access. **WARNING** This template creates an Amazon EC2 instance. You will be billed for the AWS resources used if you create a stack from this template.",
 
   "Parameters" : {
+    "StackTTL" : {
+      "Description" : "Duration in minutes after which the stack should be deleted",
+      "Type": "Number",
+      "MinValue": "2",
+      "MaxValue": "1440",
+      "Default": "5"
+    },  
     "KeyName": {
       "Description" : "Name of an existing EC2 KeyPair to enable SSH access to the instance",
       "Type": "String",
@@ -515,6 +522,7 @@
             },  
             "services" : {
               "sysvinit" : {
+                "codedeploy-agent": { "enabled": "true", "ensureRunning": "true" },  
                 "cfn-hup" : { "enabled" : "true", "ensureRunning" : "true",
                               "files" : ["/etc/cfn/cfn-hup.conf", "/etc/cfn/hooks.d/cfn-auto-reloader.conf"]}
               }
@@ -547,7 +555,7 @@
                 "mode"   : "000755",
                 "owner"  : "ec2-user",
                 "group"  : "ec2-user"
-              },
+              },  
              "/etc/httpd/conf.d/tomcatvh.conf": {
                     "content": "<VirtualHost *:80>\n  ProxyPass / http://localhost:8080/\n  ProxyPassReverse / http://localhost:8080/\n</VirtualHost>\n",
                     "mode": "000644",
@@ -556,19 +564,32 @@
                 }    
             },
             "commands": {
-                "ubuntu2cmd2": {
+                "deploycode": {
                     "command": "/var/lib/tomcat8/webapps/pushnewversion.sh"
                 }
             },  
             "services": {
-              "sysvinit": {
-               "codedeploy-agent": { "enabled": "true", "ensureRunning": "true" },   
+              "sysvinit": {                  
                 "httpd"    : { "enabled" : "true", "ensureRunning" : "true" },
                 "tomcat8"    : { "enabled" : "true", "ensureRunning" : "true" }  
               }
-            }
+            }                
           },
-          "delete_stack" : {}
+          "delete_stack" : {
+            "files" : {
+                 "/var/lib/tomcat8/webapps/deletestack.sh" : {
+                  "content" : { "Fn::Join" : ["", [ "aws cloudformation delete-stack --region ", { "Ref" : "AWS::Region" }, " --stack-name ", { "Ref" : "CodeDeployApplication" } ]]},
+                  "mode"    : "000400",
+                  "owner"   : "ec2-user",
+                  "group"   : "ec2-user"
+                }
+              },
+              "commands" : {
+                "schedule_stack_deletion" : {
+                  "command" : { "Fn::Join" : ["", [ "at -f /var/lib/tomcat8/webapps/deletestack.sh now + ", { "Ref" : "StackTTL" }, " minutes" ]]}
+                }
+              }  
+          }
         },
           "AWS::CloudFormation::Authentication" : {
              "S3AccessCreds" : {
