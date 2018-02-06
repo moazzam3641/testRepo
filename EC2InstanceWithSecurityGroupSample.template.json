@@ -353,8 +353,29 @@
                 "Statement": [
                     {
                         "Action": [
-                            "sts:AssumeRole"
+                            "autoscaling:*",
+                            "codedeploy:*",
+                            "ec2:*",
+                            "lambda:*",
+                            "elasticloadbalancing:*",
+                            "iam:AddRoleToInstanceProfile",
+                            "iam:CreateInstanceProfile",
+                            "iam:CreateRole",
+                            "iam:DeleteInstanceProfile",
+                            "iam:DeleteRole",
+                            "iam:DeleteRolePolicy",
+                            "iam:GetInstanceProfile",
+                            "iam:GetRole",
+                            "iam:GetRolePolicy",
+                            "iam:ListInstanceProfilesForRole",
+                            "iam:ListRolePolicies",
+                            "iam:ListRoles",
+                            "iam:PassRole",
+                            "iam:PutRolePolicy",
+                            "iam:RemoveRoleFromInstanceProfile",
+                            "s3:*"
                         ],
+                        "Resource": "*",
                         "Effect": "Allow",
                         "Principal": {
                             "Service": [
