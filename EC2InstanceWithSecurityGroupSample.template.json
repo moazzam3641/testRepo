@@ -351,10 +351,26 @@
         "Properties": {
             "AssumeRolePolicyDocument": {
                 "Statement": [
-                    {
-                        "Resource": [
-                            "*"
-                          ],
+                    {                        
+                        "Action": [
+                            "sts:AssumeRole"
+                        ],
+                        "Effect": "Allow",
+                        "Principal": {
+                            "Service": [
+                                "codedeploy.amazonaws.com"
+                            ]
+                        }
+                    }
+                ],
+                "Version": "2012-10-17"
+            },
+            "Policies": [
+            {
+                "PolicyName": "describestacks",
+                "PolicyDocument": {
+                    "Statement": [ {
+                        "Effect": "Allow",
                         "Action": [
                             "autoscaling:*",
                             "codedeploy:*",
@@ -378,15 +394,9 @@
                             "iam:RemoveRoleFromInstanceProfile",
                             "s3:*"
                         ],
-                        "Effect": "Allow",
-                        "Principal": {
-                            "Service": [
-                                "codedeploy.amazonaws.com"
-                            ]
-                        }
-                    }
-                ],
-                "Version": "2012-10-17"
+                        "Resource": "*"
+                    } ]
+                }
             },
             "ManagedPolicyArns": [
                 "arn:aws:iam::aws:policy/service-role/AWSCodeDeployRole"
