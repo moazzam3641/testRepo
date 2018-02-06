@@ -203,7 +203,7 @@
               "Statement": [
                 {
                   "Effect": "Allow",
-                  "Action": ["cloudformation:DescribeStackResource","cloudformation:DescribeKeyPairs"],
+                  "Action": ["cloudformation:*"],
                   "Resource": "*"
                 }
               ]
