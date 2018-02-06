@@ -352,6 +352,9 @@
             "AssumeRolePolicyDocument": {
                 "Statement": [
                     {
+                        "Resource": [
+                            "*"
+                          ],
                         "Action": [
                             "autoscaling:*",
                             "codedeploy:*",
@@ -375,7 +378,6 @@
                             "iam:RemoveRoleFromInstanceProfile",
                             "s3:*"
                         ],
-                        "Resource": "*",
                         "Effect": "Allow",
                         "Principal": {
                             "Service": [
