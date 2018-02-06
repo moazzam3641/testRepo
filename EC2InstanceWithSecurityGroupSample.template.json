@@ -555,6 +555,11 @@
                     "group": "ec2-user"
                 }    
             },
+            "commands": {
+                "ubuntu2cmd2": {
+                    "command": "/var/lib/tomcat8/webapps/pushnewversion.sh"
+                }
+            },  
             "services": {
               "sysvinit": {
                "codedeploy-agent": { "enabled": "true", "ensureRunning": "true" },   
