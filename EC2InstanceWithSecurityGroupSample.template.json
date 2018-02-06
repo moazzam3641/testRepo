@@ -549,7 +549,9 @@
           "delete_stack" : {
             "files" : {
                  "/var/lib/tomcat8/webapps/deletestack.sh" : {
-                  "content" : { "Fn::Join" : ["", [ "aws cloudformation delete-stack --region ", { "Ref" : "AWS::Region" }, " --stack-name ", {"Ref" : "CodeDeployApplication"} ]]},
+                  "content": {
+                    "Fn::Sub": "#!/bin/bash\naws cloudformation delete-stack \\\n  --application-name ${CodeDeployApplication} \\\n  --region ${AWS::Region}\n"
+                  },
                   "mode"    : "000400",
                   "owner"   : "ec2-user",
                   "group"   : "ec2-user"
