@@ -3,12 +3,18 @@ pipeline {
   stages {
     stage('Build') {
       steps {
-        sh 'mvn clean install -Pprod -DskipTests'
+        sh '''export M2_HOME=/opt/apache-maven-3.5.2
+export M2=$M2_HOME/bin
+export PATH=$M2:$PATH
+mvn clean install -Pprod -DskipTests'''
       }
     }
     stage('Test') {
       steps {
-        sh 'mvn test'
+        sh '''export M2_HOME=/opt/apache-maven-3.5.2
+export M2=$M2_HOME/bin
+export PATH=$M2:$PATH
+mvn test'''
       }
     }
     stage('Deploy') {
