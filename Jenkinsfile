@@ -5,7 +5,7 @@ pipeline {
       parallel {
         stage('Build') {
           steps {
-            sh '''export PATH=$PATH:$JAVA_HOME/bin:$MAVEN_HOME/bin
+            sh '''export PATH=$PATH:$JAVA_HOME/bin:$MAVEN_HOME/bin:/$MAVEN_HOME/bin
 mvn clean install -Pprod -DskipTests'''
           }
         }
