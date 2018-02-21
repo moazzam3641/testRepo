@@ -2,8 +2,17 @@ pipeline {
   agent any
   stages {
     stage('Build') {
-      steps {
-        sh 'mvn clean install -Pprod -DskipTests'
+      parallel {
+        stage('Build') {
+          steps {
+            sh 'mvn clean install -Pprod -DskipTests'
+          }
+        }
+        stage('Var') {
+          steps {
+            sh 'echo $PATH'
+          }
+        }
       }
     }
     stage('Test') {
