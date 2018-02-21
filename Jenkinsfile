@@ -3,7 +3,7 @@ pipeline {
   stages {
     stage('Build') {
       steps {
-        sh '''export MAVEN_HOME=maven
+        sh '''export MAVEN_HOME=/maven
 export PATH=$PATH:$MAVEN_HOME/bin
 mvn clean install -Pprod -DskipTests'''
       }
