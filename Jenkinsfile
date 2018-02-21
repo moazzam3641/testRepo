@@ -10,7 +10,7 @@ pipeline {
         }
         stage('Var') {
           steps {
-            sh '''export PATH =$PATH:/usr/lib/jvm/java-8-openjdk-amd64/bin:/maven/bin:maven/bin
+            sh '''export PATH=$PATH:$JAVA_HOME/bin:$MAVEN_HOME/bin
 echo $PATH'''
           }
         }
