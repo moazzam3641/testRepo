@@ -5,7 +5,7 @@ pipeline {
       parallel {
         stage('Build') {
           steps {
-            sh '''JAVA_HOME=/usr/lib/jvm/java-8-openjdk-amd64/jre/bin/java
+            sh '''JAVA_HOME=/usr/lib/jvm/java-1.8.0-openjdk-1.8.0.51-1.b16.el7_1.x86_64
 export JAVA_HOME
 
 M2_HOME=/home/moazzams/maven
