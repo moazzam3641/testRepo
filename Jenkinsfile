@@ -16,6 +16,7 @@ export M2
 PATH=$PATH:$JAVA_HOME/bin
 PATH=$PATH:$M2
 export PATH
+echo $PATH
 mvn clean install -Pprod -DskipTests'''
           }
         }
