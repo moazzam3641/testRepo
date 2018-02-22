@@ -8,7 +8,7 @@ pipeline {
             sh '''JAVA_HOME=/usr/lib/jvm/java-8-openjdk-amd64
 export JAVA_HOME
 
-M2_HOME=maven
+M2_HOME=/maven
 export M2_HOME
 M2=$M2_HOME/bin
 export M2
