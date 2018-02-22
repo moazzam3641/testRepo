@@ -5,7 +5,18 @@ pipeline {
       parallel {
         stage('Build') {
           steps {
-            sh 'mvn clean install -Pprod -DskipTests'
+            sh '''JAVA_HOME=/usr/lib/jvm/java-8-openjdk-amd64
+export JAVA_HOME
+
+M2_HOME=maven
+export M2_HOME
+M2=$M2_HOME/bin
+export M2
+
+PATH=$PATH:$JAVA_HOME
+PATH=$PATH:$M2
+export PATH
+mvn clean install -Pprod -DskipTests'''
           }
         }
         stage('Var') {
