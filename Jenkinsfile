@@ -5,7 +5,7 @@ pipeline {
       parallel {
         stage('Build') {
           steps {
-            sh '''JAVA_HOME=/usr/lib/jvm/java-8-openjdk-amd64/jre/bin/java
+            sh '''JAVA_HOME=/usr/lib/jvm/java-8-openjdk-amd64/bin
 export JAVA_HOME
 
 M2_HOME=/home/moazzams/maven
@@ -13,7 +13,7 @@ export M2_HOME
 M2=$M2_HOME/bin
 export M2
 
-PATH=$PATH:$JAVA_HOME/bin
+PATH=$PATH:$JAVA_HOME/java
 PATH=$PATH:$M2
 export PATH
 echo $PATH
