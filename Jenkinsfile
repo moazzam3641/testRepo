@@ -30,9 +30,18 @@ echo $PATH'''
     }
     stage('Test') {
       steps {
-        sh '''export M2_HOME=/opt/apache-maven-3.5.2
-export M2=$M2_HOME/bin
-export PATH=$M2:$PATH
+        sh '''JAVA_HOME=/opt/java/jdk-9.0.4
+export JAVA_HOME
+
+M2_HOME=/home/moazzams/maven
+export M2_HOME
+M2=$M2_HOME/bin
+export M2
+
+PATH=$PATH:$JAVA_HOME/bin
+PATH=$PATH:$M2
+export PATH
+echo $PATH
 mvn test'''
       }
     }
