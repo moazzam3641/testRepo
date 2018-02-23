@@ -30,7 +30,7 @@ echo $PATH'''
     }
     stage('Test') {
       steps {
-        sh '''JAVA_HOME=/opt/java/jdk-9.0.4
+        sh '''JAVA_HOME=/opt/java/jdk1.8.0_161
 export JAVA_HOME
 
 M2_HOME=/home/moazzams/maven
