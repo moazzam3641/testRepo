@@ -47,7 +47,9 @@ mvn test'''
     }
     stage('Deploy') {
       steps {
-        sh 'pwd'
+        sh '''scp -i ~/Downloads/jenkintomcat(1).pem ~/target/blog-0.0.1-SNAPSHOT.war ec2-user@ec2-34-253-164-120.eu-west-1.compute.amazonaws.com:\'/temp/\'
+
+'''
       }
     }
   }
