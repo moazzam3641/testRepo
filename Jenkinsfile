@@ -47,7 +47,7 @@ mvn test'''
     }
     stage('Deploy') {
       steps {
-        cleanWs(cleanWhenSuccess: true)
+        sh 'pwd'
       }
     }
   }
