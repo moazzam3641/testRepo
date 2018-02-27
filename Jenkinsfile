@@ -47,7 +47,7 @@ mvn test'''
     }
     stage('Deploy') {
       steps {
-        sh 'scp -i "/home/moazzams/Downloads/jenkinstomcat.pem" "/var/lib/jenkins/workspace/javaDemoProj_master-MXFY4ANMRP7RP2YJJ7X7SASARER55IFAJIIUQUMBQJWPRKLAIIUQ/target/blog-0.0.1-SNAPSHOT.war" ec2-user@ec2-34-253-164-120.eu-west-1.compute.amazonaws.com:/tmp/'
+        sh 'scp -i -o "/home/moazzams/Downloads/jenkinstomcat.pem" "/var/lib/jenkins/workspace/javaDemoProj_master-MXFY4ANMRP7RP2YJJ7X7SASARER55IFAJIIUQUMBQJWPRKLAIIUQ/target/blog-0.0.1-SNAPSHOT.war" ec2-user@ec2-34-253-164-120.eu-west-1.compute.amazonaws.com:/tmp/'
       }
     }
   }
